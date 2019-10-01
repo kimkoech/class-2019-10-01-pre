@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 library(gapminder)
 library(tidyverse)
+library(gganimate)
 
 ```
 
@@ -31,13 +32,16 @@ Remember what [we want](http://rpubs.com/dkane/gganimate). You don't need to do 
 
 ```{r make_plot}
 gapminder %>% 
-  filter(year == 1962) %>% 
-  filter(continent == "Europe") %>% 
-  ggplot(aes(x = gdpPercap, y = lifeExp, size = pop)) + 
-    geom_point() +
+  filter(continent %in% c("Africa","Asia", "Americas")) %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp, size = pop, color = pop)) + 
+    geom_point() + # geom_point(show.legend = FALSE)
+    # scale_color_manual(values = country_colors) +
+    facet_wrap(~continent) +
     scale_x_log10() +
-    labs(title = "World in 1962",
+    labs(title = "The world gets better every year",
          x = "GDP Per Capita",
-         y = "Life Expectancy")
-  
+         y = "Life Expectancy") + 
+    theme(legend.position="none") +
+    transition_time(year)
+    # + transition_states(year, transition_length = 1, state_length = 0.1)
 ```

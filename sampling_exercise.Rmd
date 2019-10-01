@@ -1,0 +1,26 @@
+---
+title: "Sampling"
+author: "Billy Koech"
+date: "10/1/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+sheets_deauth()
+```
+
+## Import data
+
+```{r}
+x <- read_sheet("1cgP-e6THVfiW5TJ95QhX3jkNxKvc8Sicp9k_BkSRd2I")
+
+filtered <- x %>% filter((names != "_NA_character_") | (red != "_NA_character_") | (white != "_NA_character_"))
+
+
+filtered %>% ggplot(aes(x = red, color = white)) + geom_histogram(binwidth = 0.8)
+
+```
+
